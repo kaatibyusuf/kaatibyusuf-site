@@ -1,0 +1,142 @@
+/* ==========================================================================
+   Site search
+   Builds a flat index from CONTENT and filters it client-side.
+   ========================================================================== */
+
+function buildSearchIndex() {
+  const index = [];
+
+  CONTENT.articles.forEach((a) =>
+    index.push({
+      type: "Writing",
+      title: a.title,
+      excerpt: a.excerpt,
+      text: [a.title, a.excerpt, a.category, (a.tags || []).join(" ")].join(" ").toLowerCase(),
+      url: `article.html?slug=${encodeURIComponent(a.slug)}`,
+      date: a.date,
+    })
+  );
+
+    CONTENT.books.forEach((b) =>
+    index.push({
+      type: "Book",
+      title: b.title,
+      excerpt: b.shortSummary,
+      text: [b.title, b.subtitle, b.shortSummary, b.description, b.category, (b.tags || []).join(" ")].join(" ").toLowerCase(),
+      url: `book.html?slug=${encodeURIComponent(b.slug)}`,
+    })
+  );
+
+  CONTENT.projects.forEach((p) =>
+    index.push({
+      type: "Work",
+      title: p.title,
+      excerpt: p.oneLiner,
+      text: [p.title, p.oneLiner, p.type].join(" ").toLowerCase(),
+      url: `project.html?slug=${encodeURIComponent(p.slug)}`,
+    })
+  );
+
+  CONTENT.journalEntries.forEach((j) =>
+    index.push({
+      type: "Journal",
+      title: j.title,
+      excerpt: j.excerpt,
+      text: [j.title, j.excerpt].join(" ").toLowerCase(),
+      url: `journal-entry.html?slug=${encodeURIComponent(j.slug)}`,
+      date: j.date,
+    })
+  );
+
+  CONTENT.libraryItems.forEach((l) =>
+    index.push({
+      type: "Library",
+      title: l.title,
+      excerpt: l.note,
+      text: [l.title, l.author, l.category, l.note].join(" ").toLowerCase(),
+      url: "library.html",
+    })
+  );
+
+  CONTENT.thinkingNotes.forEach((t) =>
+    index.push({
+      type: "Thinking",
+      title: t.text.length > 60 ? t.text.slice(0, 60) + "…" : t.text,
+      excerpt: "",
+      text: t.text.toLowerCase(),
+      url: "index.html#thinking",
+    })
+  );
+
+  return index;
+}
+
+function debounce(fn, wait) {
+  let t;
+  return (...args) => {
+    clearTimeout(t);
+    t = setTimeout(() => fn(...args), wait);
+  };
+}
+
+function initSearch() {
+  const openTrigger = document.querySelectorAll("[data-search-open]");
+  const overlay = document.querySelector("[data-search-overlay]");
+  if (!overlay) return;
+
+  const input = overlay.querySelector("[data-search-input]");
+  const resultsEl = overlay.querySelector("[data-search-results]");
+  const closeBtn = overlay.querySelector("[data-search-close]");
+  const index = buildSearchIndex();
+
+  function open() {
+    overlay.classList.add("is-open");
+    document.body.classList.add("nav-open");
+    input.value = "";
+    resultsEl.innerHTML = "";
+    setTimeout(() => input.focus(), 30);
+  }
+
+  function close() {
+    overlay.classList.remove("is-open");
+    document.body.classList.remove("nav-open");
+  }
+
+  function runSearch(query) {
+    const q = query.trim().toLowerCase();
+    if (!q) {
+      resultsEl.innerHTML = "";
+      return;
+    }
+    const matches = index.filter((item) => item.text.includes(q)).slice(0, 20);
+    if (!matches.length) {
+      resultsEl.innerHTML = `<div class="empty-state"><p>No results.</p><p>Try a different word — or it simply isn't written yet.</p></div>`;
+      return;
+    }
+    resultsEl.innerHTML = matches
+      .map(
+        (m) => `
+        <a class="search-result" href="${m.url}">
+          <div class="search-result__type">${m.type}${m.date ? " &middot; " + formatDateLong(m.date) : ""}</div>
+          <div class="search-result__title">${escapeHtml(m.title)}</div>
+        </a>`
+      )
+      .join("");
+  }
+
+  openTrigger.forEach((btn) => btn.addEventListener("click", open));
+  if (closeBtn) closeBtn.addEventListener("click", close);
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) close();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && overlay.classList.contains("is-open")) close();
+    if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+      e.preventDefault();
+      overlay.classList.contains("is-open") ? close() : open();
+    }
+  });
+  input.addEventListener("input", debounce((e) => runSearch(e.target.value), 120));
+}
+
+document.addEventListener("DOMContentLoaded", initSearch);

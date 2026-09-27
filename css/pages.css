@@ -1,0 +1,315 @@
+/* ==========================================================================
+   Page-specific styles
+   ========================================================================== */
+
+/* --- Article page --- */
+
+.article-header {
+  max-width: var(--reading-width);
+  margin-inline: auto;
+  padding-block: var(--space-5) var(--space-4);
+}
+
+.article-category {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.article-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 5vw, var(--text-3xl));
+  line-height: 1.1;
+  margin-top: var(--space-2);
+}
+
+.article-dek {
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  color: var(--color-text-muted);
+  margin-top: var(--space-2);
+}
+
+.article-meta {
+  display: flex;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-top: var(--space-3);
+}
+
+.article-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  max-width: var(--reading-width);
+  margin-inline: auto;
+}
+
+.article-body {
+  font-family: var(--font-serif);
+  font-size: var(--text-md);
+  line-height: var(--leading-article);
+}
+
+.article-body p {
+  max-width: none;
+  margin-bottom: var(--space-3);
+}
+
+.article-body h2 {
+  margin-top: var(--space-5);
+  margin-bottom: var(--space-2);
+  font-size: var(--text-xl);
+}
+
+.article-body h3 {
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-1);
+  font-size: var(--text-lg);
+}
+
+.article-body blockquote {
+  border-left: 2px solid var(--color-border-strong);
+  padding-left: var(--space-3);
+  font-size: var(--text-lg);
+  color: var(--color-text-muted);
+  margin-block: var(--space-4);
+}
+
+.article-body code {
+  font-family: ui-monospace, "SF Mono", monospace;
+  font-size: 0.9em;
+  background: var(--color-bg-raised);
+  padding: 0.15em 0.4em;
+  border-radius: var(--radius-sm);
+}
+
+.article-body pre {
+  background: var(--color-bg-raised);
+  border: var(--border-hair);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3);
+  overflow-x: auto;
+  font-family: ui-monospace, "SF Mono", monospace;
+  font-size: var(--text-sm);
+  margin-block: var(--space-3);
+}
+
+.article-body img {
+  margin-block: var(--space-4);
+}
+
+.article-foot {
+  max-width: var(--reading-width);
+  margin-inline: auto;
+  padding-top: var(--space-5);
+  margin-top: var(--space-5);
+  border-top: var(--border-hair);
+}
+
+.article-nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  max-width: var(--reading-width);
+  margin-inline: auto;
+  padding-block: var(--space-4);
+}
+
+.article-nav a {
+  display: block;
+  padding: var(--space-3);
+  border: var(--border-hair);
+  border-radius: var(--radius-sm);
+}
+
+.article-nav a:hover { background: var(--color-bg-raised); }
+.article-nav .nav-label { font-size: var(--text-xs); color: var(--color-text-muted); }
+.article-nav .nav-title { font-family: var(--font-serif); margin-top: 0.3rem; }
+.article-nav--next { text-align: right; }
+
+@media (min-width: 960px) {
+  .article-layout--with-toc {
+    max-width: none;
+    grid-template-columns: 1fr var(--reading-width) 1fr;
+  }
+  .article-layout--with-toc .article-body { grid-column: 2; }
+  .toc-sidebar {
+    grid-column: 3;
+    position: sticky;
+    top: 6rem;
+    align-self: start;
+  }
+  .toc-mobile { display: none; }
+}
+
+@media (max-width: 959px) {
+  .toc-sidebar { display: none; }
+}
+
+/* --- About page --- */
+
+.about-photo {
+  aspect-ratio: 4 / 5;
+  max-width: 320px;
+  background: var(--color-bg-raised);
+  border: var(--border-hair);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-4);
+}
+
+.about-block {
+  padding-block: var(--space-4);
+  border-top: var(--border-hair);
+}
+
+.about-block:first-of-type { border-top: none; }
+
+.about-block h2 {
+  margin-bottom: var(--space-2);
+}
+
+.about-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.2rem;
+}
+
+/* --- Journey timeline --- */
+
+.timeline-year {
+  padding-block: var(--space-5);
+  border-top: var(--border-hair);
+}
+
+.timeline-year:first-of-type { border-top: none; }
+
+.timeline-year__label {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  margin-bottom: var(--space-3);
+}
+
+.timeline-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+
+.timeline-cat__label {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin-bottom: 0.3rem;
+}
+
+@media (min-width: 720px) {
+  .timeline-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* --- Contact --- */
+
+.contact-email {
+  font-family: var(--font-serif);
+  font-size: clamp(1.5rem, 4vw, var(--text-2xl));
+  display: inline-block;
+  border-bottom: 1px solid var(--color-border-strong);
+}
+
+.contact-socials {
+  display: flex;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+}
+
+/* --- 404 --- */
+
+.error-page {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-block: var(--space-6);
+}
+
+.error-code {
+  font-family: var(--font-serif);
+  font-size: clamp(4rem, 15vw, 8rem);
+  line-height: 1;
+}
+
+.error-body {
+  max-width: 40ch;
+  margin-top: var(--space-3);
+  color: var(--color-text-muted);
+}
+
+/* --- Book / project detail intro --- */
+
+.detail-hero {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  padding-block: var(--space-5);
+}
+
+@media (min-width: 720px) {
+  .detail-hero--book { grid-template-columns: 320px 1fr; }
+}
+
+.detail-hero__cover {
+  aspect-ratio: 2 / 3;
+  background: var(--color-bg-raised);
+  border: var(--border-hair);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  font-family: var(--font-serif);
+  text-align: center;
+  padding: var(--space-2);
+}
+
+/* --- Book images (two boxes: cover + back) ---
+   Used on both the book card (books archive, homepage) and the book
+   detail hero. Replaces the old single .detail-hero__cover box for
+   books specifically — .detail-hero__cover above is left in place in
+   case project.html's hero still uses it. */
+
+.book-images {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.book-image-box {
+  flex: 1;
+  aspect-ratio: 2 / 3;
+  overflow: hidden;
+  background: var(--color-bg-raised);
+  border: var(--border-hair);
+}
+
+.book-image-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.book-image-box--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-2);
+  font-family: var(--font-serif);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.detail-hero--book .book-images {
+  align-self: start;
+}
